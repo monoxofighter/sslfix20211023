@@ -7,6 +7,7 @@
 # THIS REPO SPECIALLY MADE FOR ELH.NETWOXCLOUD SERVERS.
 #====================================================
 
+# Edit Stunnel.conf File
 mkdir /etc/stunnel
 cat << EOF > /etc/stunnel/stunnel.conf
 cert = /etc/stunnel/stunnel.pem
@@ -20,16 +21,16 @@ connect = 0.0.0.0:22
 accept = 443
 sslVersion = all
 EOF
-
+# Cerate New Cetificates
 openssl req -new -newkey rsa:4096 -days 365 -nodes -x509 \
     -subj "/C=US/ST=Denial/L=Springfield/O=Dis/CN=www.example.com" \
     -out stunnel.pem  -keyout stunnel.pem
 
 cp stunnel.pem /etc/stunnel/stunnel.pem
 chmod 644 /etc/stunnel/stunnel.pem
-
+# Restart Service
 service stunnel4 restart 
 service ssh restart 
 /etc/init.d/stunnel4 restart
-
+# Remove sslfix file
 rm -r sslfix
